@@ -59,10 +59,22 @@ class Board
     end
   end
 
-  # def not_a_bomb?
-  #   return false if
-  #
-  #
-  # end
+  def render
+    @grid.map do |row|
+      row.map do |tile|
+        if tile.flagged
+          "F"
+        elsif tile.hidden
+          "H"
+        elsif tile.bomb_status == :bomb
+          "B"
+        elsif tile.bomb_status == 0
+          " "
+        else
+          tile.bomb_status.to_s
+        end
+      end
+    end
+  end
 
 end
