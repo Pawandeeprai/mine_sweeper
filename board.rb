@@ -31,20 +31,26 @@ class Board
   end
 
   def fill_non_bomb_tiles
-    @grid.each do |tile|
-      tile = Tile.new if tile.nil?
+    i = 0
+    while i < @grid.length
+      idx = 0
+      while idx < @grid[i].length
+        self[i,idx] = Tile.new if self[i,idx].nil?
+        idx +=1
+      end
+      i += 1
     end
   end
 
   def adjacent_bombs
     adjacent = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]]
-    @grid.each do |row|
-      row.each do |el|
+    @grid.each_with_index do |array, row|
+      array.each_with_index do |el, col|
         if el.bomb_status == :bomb
 
           adjacent.each do |pos|
             new_spot = [row + pos[0], col + pos[1]]
-            if new_spot[0..1] >= 0 && new_spot[0..1] <=8 && self.[](*new_spot).bomb_status != :bomb
+            if new_spot[0] >= 0 && new_spot[1] >= 0 && new_spot[0] <=8 && new_spot[1] <=8 && self.[](*new_spot).bomb_status != :bomb
               self.[](*new_spot).bomb_status += 1
             end
           end
