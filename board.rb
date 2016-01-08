@@ -77,4 +77,12 @@ class Board
     end
   end
 
+  def each(&block)
+    @grid.each do |row|
+      row.each do |tile|
+        block.call(tile)
+      end
+    end
+  end
+
 end
