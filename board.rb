@@ -18,6 +18,10 @@ class Board
     @grid[row][col] = bomb
   end
 
+  def won?
+    @grid.flatten.all? { |tile| tile.hidden == tile.bomb? }
+  end
+
   def place_bombs_randomly
     bombs = 0
     while bombs < 10
@@ -44,6 +48,7 @@ class Board
 
   def adjacent_bombs
     adjacent = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]]
+
     @grid.each_with_index do |array, row|
       array.each_with_index do |el, col|
         if el.bomb_status == :bomb
@@ -62,18 +67,15 @@ class Board
   def render
     @grid.map do |row|
       row.map do |tile|
-        if tile.flagged
-          "F"
-        elsif tile.hidden
-          "H"
-        elsif tile.bomb_status == :bomb
-          "B"
-        elsif tile.bomb_status == 0
-          " "
-        else
-          tile.bomb_status.to_s
-        end
+        tile.render
       end
+    end
+  end
+
+  def print
+    board_state = render
+    board_state.each do |row|
+      p row
     end
   end
 
